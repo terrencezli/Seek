@@ -55,23 +55,24 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult){
-                GraphRequestAsyncTask graphRequestAsyncTask = new GraphRequest(
-                        loginResult.getAccessToken(),
-                        "/me/friends",
-                        null,
-                        HttpMethod.GET,
-                        new GraphRequest.Callback() {
-                            public void onCompleted(GraphResponse response) {
-                                Intent intent = new Intent(MainActivity.this,FriendsList.class);
-                                try {
-                                    JSONArray rawName = response.getJSONObject().getJSONArray("data");
-                                    intent.putExtra("jsondata", rawName.toString());
-                                    startActivity(intent);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }).executeAsync();
+                // tried to do some friends list stuff
+//                GraphRequestAsyncTask graphRequestAsyncTask = new GraphRequest(
+//                        loginResult.getAccessToken(),
+//                        "/me/friends",
+//                        null,
+//                        HttpMethod.GET,
+//                        new GraphRequest.Callback() {
+//                            public void onCompleted(GraphResponse response) {
+//                                Intent intent = new Intent(MainActivity.this,FriendsList.class);
+//                                try {
+//                                    JSONArray rawName = response.getJSONObject().getJSONArray("data");
+//                                    intent.putExtra("jsondata", rawName.toString());
+//                                    startActivity(intent);
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//                        }).executeAsync();
 
                 Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
             }
