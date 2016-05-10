@@ -1,94 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/lib/com.app.chasebank"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#F5F5F5">
+              xmlns:app="http://schemas.android.com/apk/lib/com.app.chasebank"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#F5F5F5"
+              android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/activity_my_toolbar"
+  <android.support.v7.widget.Toolbar android:id="@+id/activity_my_toolbar"
+                                     xmlns:android="http://schemas.android.com/apk/res/android"
+                                     xmlns:app="http://schemas.android.com/apk/res-auto"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content"
+                                     android:background="?attr/colorPrimary"
+                                     android:minHeight="?attr/actionBarSize"
+                                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                                     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    <ImageView
+        android:id="@+id/imgToolIcon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:src="@drawable/logo"/>
+
+  </android.support.v7.widget.Toolbar>
+
+  <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/text1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
+        android:gravity="center"
+        android:text="@string/auto_complete_friends"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-        <ImageView
-            android:id="@+id/imgToolIcon"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:src="@drawable/logo"/>
+    <Button
+        android:id="@+id/friendsButton"
+        style="@android:style/Widget.Holo.Light.Spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pick a friend"
+        />
 
-    </android.support.v7.widget.Toolbar>
-
-    <LinearLayout
+    <!-- TimePicker options -->
+    <TextView
+        android:id="@+id/time_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center">
+        android:layout_marginTop="50dp"
+        android:text="@string/selected_time"/>
 
-        <TextView
-            android:id="@+id/text1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/auto_complete_friends"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+    <Button
+        android:id="@+id/time_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pick_time"/>
 
-        <AutoCompleteTextView
-            android:id="@+id/autoComplete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="20dp"
-            android:ems="8" />
 
-        <!-- TimePicker options -->
-        <TextView
-            android:id="@+id/time_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="@string/selected_time"/>
+    <!-- DatePicker Options -->
+    <TextView
+        android:id="@+id/date_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/selected_date"/>
 
-        <Button
-            android:id="@+id/time_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/pick_time"/>
+    <Button
+        android:id="@+id/date_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pick_date"/>
 
-        <!-- DatePicker Options -->
-        <TextView
-            android:id="@+id/date_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/selected_date"/>
+    <Button
+        android:id="@+id/invite_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/invite_friends"/>
 
-        <Button
-            android:id="@+id/date_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/pick_date"/>
+    <Button
+        android:id="@+id/history_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/view_history"/>
 
-        <Button
-            android:id="@+id/invite_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="@string/invite_friends"/>
-
-        <Button
-            android:id="@+id/history_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="@string/view_history"/>
-
-    </LinearLayout>
+  </LinearLayout>
 
 </LinearLayout>

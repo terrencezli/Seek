@@ -10,4 +10,7 @@
         <item name="colorAccent">#4CAF50</item>
     </style>
 
+    <style name="MyButton" parent="android:Widget.Holo.Spinner">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
 </resources>

@@ -9,6 +9,7 @@ import com.facebook.appevents.AppEventsLogger;
  * Created by terrence on 4/18/16.
  */
 public class SeekApplication extends Application {
+
     @Override
     public void onCreate() {
         super.onCreate();

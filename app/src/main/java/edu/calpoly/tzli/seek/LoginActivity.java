@@ -1,10 +1,8 @@
 package edu.calpoly.tzli.seek;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -12,16 +10,8 @@ import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.GraphRequest;
-import com.facebook.GraphRequestAsyncTask;
-import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Arrays;
 
@@ -55,23 +45,23 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult){
-                GraphRequestAsyncTask graphRequestAsyncTask = new GraphRequest(
-                        loginResult.getAccessToken(),
-                        "/me/friends",
-                        null,
-                        HttpMethod.GET,
-                        new GraphRequest.Callback() {
-                            public void onCompleted(GraphResponse response) {
-                                Intent intent = new Intent(MainActivity.this,FriendsList.class);
-                                try {
-                                    JSONArray rawName = response.getJSONObject().getJSONArray("data");
-                                    intent.putExtra("jsondata", rawName.toString());
-                                    startActivity(intent);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }).executeAsync();
+//                GraphRequestAsyncTask graphRequestAsyncTask = new GraphRequest(
+//                        loginResult.getAccessToken(),
+//                        "/me/friends",
+//                        null,
+//                        HttpMethod.GET,
+//                        new GraphRequest.Callback() {
+//                            public void onCompleted(GraphResponse response) {
+//                                Intent intent = new Intent(MainActivity.this,FriendsList.class);
+//                                try {
+//                                    JSONArray rawName = response.getJSONObject().getJSONArray("data");
+//                                    intent.putExtra("jsondata", rawName.toString());
+//                                    startActivity(intent);
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//                        }).executeAsync();
 
                 Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
             }
