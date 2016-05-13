@@ -1,43 +1,29 @@
 package edu.calpoly.tzli.seek;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
-import android.support.v4.app.DialogFragment;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Calendar;
 
@@ -51,11 +37,13 @@ public class MainActivity extends AppCompatActivity implements
 {
     protected TextView timeTextView;
     protected TextView dateTextView;
-    protected AutoCompleteTextView textView;
+//    protected AutoCompleteTextView textView;
     protected Toolbar toolbar;
     protected Firebase myFirebaseRef;
     protected Button inviteFriends;
     protected Button friendsHistory;
+    private Button friendsPicker;
+    public static String friend;
 
 
     @Override
@@ -80,18 +68,20 @@ public class MainActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        // Get a reference to the AutoCompleteTextView in the layout
-        textView = (AutoCompleteTextView) findViewById(R.id.autoComplete);
-        textView.setInputType(InputType.TYPE_CLASS_TEXT);
+//        // Get a reference to the AutoCompleteTextView in the layout
+//        textView = (AutoCompleteTextView) findViewById(R.id.autoComplete);
+//        textView.setInputType(InputType.TYPE_CLASS_TEXT);
+//
+//        // Get the string array
+//        String[] names = getResources().getStringArray(R.array.names_array);
+//        // Create the adapter and set it to the AutoCompleteTextView
+//        ArrayAdapter<String> adapter =
+//                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, names);
+//        textView.setAdapter(adapter);
+//        textView.setThreshold(1);
 
-        // Get the string array
-        String[] names = getResources().getStringArray(R.array.names_array);
-        // Create the adapter and set it to the AutoCompleteTextView
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, names);
-        textView.setAdapter(adapter);
-        textView.setThreshold(1);
-
+        friendsPicker = (Button) findViewById(R.id.friendsButton);
+        friendsPicker.setOnClickListener(this);
         timeTextView = (TextView) findViewById(R.id.time_textview);
         dateTextView = (TextView) findViewById(R.id.date_textview);
 
@@ -110,6 +100,9 @@ public class MainActivity extends AppCompatActivity implements
 
         if(tpd != null) tpd.setOnTimeSetListener(this);
         if(dpd != null) dpd.setOnDateSetListener(this);
+
+        if (friend != null) friendsPicker.setText(friend);
+
     }
 
     @Override
@@ -128,27 +121,27 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     protected void initAddKeyListeners() {
-        textView.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                String value = textView.getText().toString();
-
-                if (!(value.equals(null) || value.equals(""))) {
-                    if (event.getAction() != KeyEvent.ACTION_DOWN && (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_DPAD_CENTER)) {
-
-                        InputMethodManager imm = (InputMethodManager)
-                                getSystemService(Context.INPUT_METHOD_SERVICE);
-
-                        imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
-
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        });
+//        textView.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//
+//                String value = textView.getText().toString();
+//
+//                if (!(value.equals(null) || value.equals(""))) {
+//                    if (event.getAction() != KeyEvent.ACTION_DOWN && (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_DPAD_CENTER)) {
+//
+//                        InputMethodManager imm = (InputMethodManager)
+//                                getSystemService(Context.INPUT_METHOD_SERVICE);
+//
+//                        imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
+//
+//                        return true;
+//                    }
+//                }
+//
+//                return false;
+//            }
+//        });
 
         Button timeButton = (Button) findViewById(R.id.time_button);
         Button dateButton = (Button) findViewById(R.id.date_button);
@@ -193,8 +186,8 @@ public class MainActivity extends AppCompatActivity implements
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.invite_button:
-                String nameString = textView.getText().toString();
-                myFirebaseRef.child("userId").setValue(nameString + ", " + dateTextView.getText() + ", " + timeTextView.getText());
+//                String nameString = textView.getText().toString();
+//                myFirebaseRef.child("userId").setValue(nameString + ", " + dateTextView.getText() + ", " + timeTextView.getText());
                 Toast.makeText(MainActivity.this, "Sent userId", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.history_button:
@@ -206,6 +199,10 @@ public class MainActivity extends AppCompatActivity implements
                     }
                     @Override public void onCancelled(FirebaseError error) { }
                 });
+                break;
+            case R.id.friendsButton:
+                Intent i = new Intent(MainActivity.this, FriendsSearchActivity.class);
+                startActivity(i);
                 break;
         }
     }
