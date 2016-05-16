@@ -23,26 +23,44 @@ public class HistoryActivity extends AppCompatActivity {
     protected ListView friend_history;
     protected ArrayAdapter<String> valuesAdapter;
     protected ArrayList<String> displayArray;
+    protected String personalName;
+    protected String personalId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        myFirebaseRef = new Firebase("boiling-heat-1137.firebaseIO.com");
-        friend_history = (ListView) findViewById(R.id.friend_history);
-        displayArray = new ArrayList<>();
-        valuesAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,android.R.id.text1,displayArray);
-        friend_history.setAdapter(valuesAdapter);
+        personalName = getIntent().getExtras().getString("personalName");
+        personalId = getIntent().getExtras().getString("personalId");
 
-        myFirebaseRef.child("userId").addValueEventListener(new ValueEventListener() {
+        myFirebaseRef = new Firebase("https://boiling-heat-1137.firebaseIO.com/" + personalId);
+        friend_history = (ListView) findViewById(R.id.friend_history);
+//        displayArray = new ArrayList<>();
+//
+//
+//
+//        valuesAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, displayArray);
+//        friend_history.setAdapter(valuesAdapter);
+//
+//        setContentView(R.layout.activity_history);
+        getPairings();
+
+    }
+
+    public void getPairings() {
+        myFirebaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                System.out.println(snapshot.getValue());
+
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    System.out.println(postSnapshot.getValue());
+                }
             }
-            @Override public void onCancelled(FirebaseError error) { }
+
+            @Override
+            public void onCancelled(FirebaseError error) {
+                System.out.println("The read failed: " + error.getMessage());
+            }
         });
-
-        setContentView(R.layout.activity_history);
-
     }
 
     @Override

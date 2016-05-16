@@ -3,31 +3,44 @@ package edu.calpoly.tzli.seek;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
-/**
- * Created by micha on 5/9/2016.
- */
+import edu.calpoly.tzli.seek.helper.DividerItemDecoration;
+import edu.calpoly.tzli.seek.helper.RecyclerItemClickListener;
+
 public class FriendsSearchActivity extends AppCompatActivity {
 
-  ListView listView;
-  ArrayAdapter<String> adapter;
-  List<String> names;
-  List<String> filteredNames;
+  FacebookAdapter adapter;
+  List<FacebookProfile> names;
+  List<FacebookProfile> filteredNames;
   Toolbar toolbar;
+  AccessToken accessToken;
 
   Button back;
   EditText search;
@@ -36,7 +49,11 @@ public class FriendsSearchActivity extends AppCompatActivity {
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_friends_picker);
-    listView = (ListView) findViewById(R.id.list);
+
+    accessToken = AccessToken.getCurrentAccessToken();
+
+    RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
+    recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
     toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -60,8 +77,8 @@ public class FriendsSearchActivity extends AppCompatActivity {
           return;
         }
         String search = s.toString().replace(" ", "").toLowerCase();
-        for (String name : names) {
-          if (name.toLowerCase().contains(search)) {
+        for (FacebookProfile name : names) {
+          if (name.getName().toLowerCase().contains(search)) {
             filteredNames.add(name);
           }
         }
@@ -75,18 +92,117 @@ public class FriendsSearchActivity extends AppCompatActivity {
     });
 
 
-    names = Arrays.asList(getResources().getStringArray(R.array.names_array));
+    try {
+      names = getFacebookFriends(accessToken);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    } catch (ExecutionException e) {
+      e.printStackTrace();
+    }
+    recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     filteredNames = new ArrayList<>(names);
-    adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, filteredNames);
-    listView.setAdapter(adapter);
-    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    adapter = new FacebookAdapter(filteredNames);
+    recyclerView.setAdapter(adapter);
+
+    recyclerView.addOnItemTouchListener(
+        new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
+          @Override public void onItemClick(View view, int position) {
+            MainActivity.friend = filteredNames.get(position).getName();
+            onBackPressed();
+          }
+        })
+    );
+  }
+
+  public static class FacebookAdapter extends RecyclerView.Adapter<FacebookViewHolder> {
+
+    private List<FacebookProfile> mFacebook;
+
+    public FacebookAdapter(List<FacebookProfile> a) {
+      this.mFacebook = a;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+      return R.layout.friend_item_view;
+    }
+
+    @Override
+    public FacebookViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+      return new FacebookViewHolder(LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false));
+    }
+
+
+    @Override
+    public void onBindViewHolder(FacebookViewHolder holder, int position) {
+      holder.bind(mFacebook.get(position));
+    }
+
+    @Override
+    public int getItemCount() {
+      return mFacebook.size();
+    }
+  }
+
+  public static class FacebookViewHolder extends RecyclerView.ViewHolder {
+
+    private ImageView mIv;
+    private TextView mTv;
+    public FacebookProfile mFb;
+
+    public FacebookViewHolder(View itemView) {
+      super(itemView);
+
+      mIv = (ImageView) itemView.findViewById(R.id.iv);
+      mTv = (TextView) itemView.findViewById(R.id.tv);
+    }
+
+    public void bind(FacebookProfile a) {
+      mFb = a;
+
+      mTv.setText(a.getName());
+
+      Glide.with(mIv.getContext())
+              .load(a.getImageUrl())
+              .into(mIv);
+    }
+
+
+  }
+
+  public static List<FacebookProfile> getFacebookFriends(AccessToken accessToken) throws InterruptedException, ExecutionException {
+    final List<FacebookProfile> friendsMap = new ArrayList<>();
+
+    GraphRequest.Callback gCallback = new GraphRequest.Callback() {
+      public void onCompleted(GraphResponse response) {
+        JSONObject jGraphObj = response.getJSONObject();
+        try {
+          JSONArray friendsData = jGraphObj.getJSONArray("data");
+          for (int i = 0; i < friendsData.length(); i++) {
+            JSONObject friend = friendsData.getJSONObject(i);
+            String friendId = friend.getString("id");
+            String friendName = friend.getString("name");
+            FacebookProfile fb = new FacebookProfile(friendName, friendId);
+            friendsMap.add(fb);
+          }
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    };
+    final GraphRequest graphRequest = new GraphRequest(accessToken, "/me/friends", null, HttpMethod.GET, gCallback);
+    // Run facebook graphRequest.
+    Thread t = new Thread(new Runnable() {
       @Override
-      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        MainActivity.friend = filteredNames.get(position);
-        onBackPressed();
+      public void run() {
+        GraphResponse gResponse = graphRequest.executeAndWait();
       }
     });
+    t.start();
+    t.join();
+    return friendsMap;
   }
+
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {

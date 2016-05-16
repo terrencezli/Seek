@@ -14,7 +14,7 @@
                                      android:background="?attr/colorPrimary"
                                      android:minHeight="?attr/actionBarSize"
                                      app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                                     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+                                     android:theme="@style/AppTheme">
 
     <ImageView
         android:id="@+id/imgToolIcon"
@@ -29,7 +29,8 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
-      android:orientation="vertical">
+      android:orientation="vertical"
+      android:padding="20dp">
 
     <TextView
         android:id="@+id/text1"
@@ -44,22 +45,22 @@
         style="@android:style/Widget.Holo.Light.Spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pick a friend"
+        android:text="@string/pick_friend"
         />
 
     <!-- TimePicker options -->
-    <TextView
-        android:id="@+id/time_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="@string/selected_time"/>
+    <!--<TextView-->
+        <!--android:id="@+id/time_textview"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="50dp"-->
+        <!--android:text="@string/selected_time"/>-->
 
-    <Button
-        android:id="@+id/time_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/pick_time"/>
+    <!--<Button-->
+        <!--android:id="@+id/time_button"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/pick_time"/>-->
 
 
     <!-- DatePicker Options -->
@@ -77,7 +78,7 @@
         android:text="@string/pick_date"/>
 
     <Button
-        android:id="@+id/invite_button"
+        android:id="@+id/met_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
