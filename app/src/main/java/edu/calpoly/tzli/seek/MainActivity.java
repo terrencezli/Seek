@@ -34,11 +34,9 @@ import java.util.Calendar;
  * Created by terrence on 4/18/16.
  */
 public class MainActivity extends AppCompatActivity implements
-//        TimePickerDialog.OnTimeSetListener,
         DatePickerDialog.OnDateSetListener,
         View.OnClickListener
 {
-//    protected TextView timeTextView;
     protected TextView dateTextView;
     protected Toolbar toolbar;
     protected Firebase myFirebaseRef;
@@ -47,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements
     private Button friendsPicker;
     private FacebookProfile personal;
     public static String friend;
+
 
 
     @Override
@@ -68,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements
 
         friendsPicker = (Button) findViewById(R.id.friendsButton);
         friendsPicker.setOnClickListener(this);
-//        timeTextView = (TextView) findViewById(R.id.time_textview);
         dateTextView = (TextView) findViewById(R.id.date_textview);
 
         metFriends = (Button) findViewById(R.id.met_button);
@@ -81,24 +79,13 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onResume() {
         super.onResume();
-//        TimePickerDialog tpd = (TimePickerDialog) getFragmentManager().findFragmentByTag("Timepickerdialog");
         DatePickerDialog dpd = (DatePickerDialog) getFragmentManager().findFragmentByTag("Datepickerdialog");
 
-//        if(tpd != null) tpd.setOnTimeSetListener(this);
         if(dpd != null) dpd.setOnDateSetListener(this);
 
         if (friend != null) friendsPicker.setText(friend);
 
     }
-
-//    @Override
-//    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
-//        String hourString = hourOfDay < 10 ? "0"+hourOfDay : ""+hourOfDay;
-//        String minuteString = minute < 10 ? "0"+minute : ""+minute;
-//        String secondString = second < 10 ? "0"+second : ""+second;
-//        String time = "You picked the following time: "+hourString+"h"+minuteString+"m"+secondString+"s";
-//        timeTextView.setText(time);
-//    }
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
@@ -107,29 +94,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     protected void initAddKeyListeners() {
-//        Button timeButton = (Button) findViewById(R.id.time_button);
         Button dateButton = (Button) findViewById(R.id.date_button);
-//        // Show a timepicker when the timeButton is clicked
-//        assert timeButton != null;
-//        timeButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Calendar now = Calendar.getInstance();
-//                TimePickerDialog tpd = TimePickerDialog.newInstance(
-//                        MainActivity.this,
-//                        now.get(Calendar.HOUR_OF_DAY),
-//                        now.get(Calendar.MINUTE),
-//                        false
-//                );
-//                tpd.setOnCancelListener(new DialogInterface.OnCancelListener() {
-//                    @Override
-//                    public void onCancel(DialogInterface dialogInterface) {
-//                        Log.d("TimePicker", "Dialog was cancelled");
-//                    }
-//                });
-//                tpd.show(getFragmentManager(), "Timepickerdialog");
-//            }
-//        });
 
         // Show a datepicker when the dateButton is clicked
         assert dateButton != null;
