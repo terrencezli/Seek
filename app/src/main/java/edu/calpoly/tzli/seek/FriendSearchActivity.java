@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,10 +22,12 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -34,7 +35,11 @@ import java.util.concurrent.ExecutionException;
 import edu.calpoly.tzli.seek.helper.DividerItemDecoration;
 import edu.calpoly.tzli.seek.helper.RecyclerItemClickListener;
 
-public class FriendsSearchActivity extends AppCompatActivity {
+public class FriendSearchActivity extends AppCompatActivity
+//        implements
+//        DatePickerDialog.OnDateSetListener,
+//        View.OnClickListener
+{
 
   FacebookAdapter adapter;
   List<FacebookProfile> names;
@@ -106,8 +111,9 @@ public class FriendsSearchActivity extends AppCompatActivity {
 
     recyclerView.addOnItemTouchListener(
         new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
-          @Override public void onItemClick(View view, int position) {
-            MainActivity.friend = filteredNames.get(position).getName();
+          @Override public void onItemClick(View view, int position) throws IOException {
+            MeetFragment.friend = new FacebookProfile(filteredNames.get(position).getName(),
+                    filteredNames.get(position).getId());
             onBackPressed();
           }
         })

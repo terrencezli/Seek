@@ -1,103 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/lib/com.app.chasebank"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="#F5F5F5"
-              android:orientation="vertical">
 
-  <android.support.v7.widget.Toolbar android:id="@+id/activity_my_toolbar"
-                                     xmlns:android="http://schemas.android.com/apk/res/android"
-                                     xmlns:app="http://schemas.android.com/apk/res-auto"
-                                     android:layout_width="match_parent"
-                                     android:layout_height="wrap_content"
-                                     android:background="?attr/colorPrimary"
-                                     android:minHeight="?attr/actionBarSize"
-                                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                                     android:theme="@style/AppTheme">
+  <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/imgToolIcon"
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+      <android.support.v7.widget.Toolbar
+          android:id="@+id/toolbar"
+          android:layout_width="match_parent"
+          android:layout_height="?attr/actionBarSize"
+          android:background="?attr/colorPrimary"
+          app:layout_scrollFlags="scroll|enterAlways"
+          app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+      <android.support.design.widget.TabLayout
+          android:id="@+id/tabs"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:tabMode="fixed"
+          app:tabGravity="fill"/>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:src="@drawable/logo"/>
-
-  </android.support.v7.widget.Toolbar>
-
-  <LinearLayout
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:orientation="vertical"
-      android:padding="20dp">
-
-    <ImageView
-        android:id="@+id/profile_picture"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:src="@drawable/profile_picture"/>
-
-    <TextView
-        android:id="@+id/text1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/auto_complete_friends"
-        android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-    <Button
-        android:id="@+id/friendsButton"
-        style="@android:style/Widget.Holo.Light.Spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/pick_friend"
-        />
-
-    <!-- TimePicker options -->
-    <!--<TextView-->
-        <!--android:id="@+id/time_textview"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="50dp"-->
-        <!--android:text="@string/selected_time"/>-->
-
-    <!--<Button-->
-        <!--android:id="@+id/time_button"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/pick_time"/>-->
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"  />
+  </android.support.design.widget.CoordinatorLayout>
 
 
-    <!-- DatePicker Options -->
-    <TextView
-        android:id="@+id/date_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/selected_date"/>
-
-    <Button
-        android:id="@+id/date_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/pick_date"/>
-
-    <Button
-        android:id="@+id/met_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="@string/invite_friends"/>
-
-    <Button
-        android:id="@+id/history_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="@string/view_history"/>
-
-  </LinearLayout>
-
-</LinearLayout>

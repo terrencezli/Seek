@@ -1,0 +1,47 @@
+<LinearLayout android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:padding="20dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <ImageView
+            android:id="@+id/profile_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/profile_picture"/>
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/auto_complete_friends"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+        <Button
+            android:id="@+id/friendsButton"
+            style="@android:style/Widget.Holo.Light.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pick_friend"
+            />
+
+        <!-- DatePicker Options -->
+        <Button
+            android:id="@+id/date_button"
+            style="@android:style/Widget.Holo.Light.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pick_date"/>
+
+        <Button
+            android:id="@+id/met_button"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="@string/invite_friends"/>
+
+    </LinearLayout>

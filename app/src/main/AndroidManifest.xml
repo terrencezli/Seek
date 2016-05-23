@@ -21,8 +21,8 @@
       </intent-filter>
     </activity>
     <activity android:name=".MainActivity"/>
-    <activity android:name=".FriendsSearchActivity"/>
-    <activity android:name=".HistoryActivity"/>
+    <activity android:name=".FriendSearchActivity"/>
+    <activity android:name=".HistoryFragment"/>
     <activity
         android:name="com.facebook.FacebookActivity"
         android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"

@@ -11,6 +11,9 @@ public class FacebookProfile {
     private String picture;
     private int metUp;
 
+    public FacebookProfile() {
+    }
+
     public FacebookProfile(String name, String id) throws IOException {
         this.name = name;
         this.id = id;
