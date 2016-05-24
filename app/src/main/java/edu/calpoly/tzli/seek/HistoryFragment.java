@@ -1,14 +1,13 @@
 package edu.calpoly.tzli.seek;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -25,12 +24,12 @@ import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.internal.CardThumbnail;
 import it.gmariotti.cardslib.library.view.CardListView;
+import it.gmariotti.cardslib.library.view.CardViewNative;
 
 
 public class HistoryFragment extends Fragment {
     protected Firebase myFirebaseRef;
-    protected static String personalName = "";
-    protected static String personalId = "";
+    protected FacebookProfile personal;
 
     protected ArrayList<MeetUp> displayArray;
     protected ArrayList<Card> cards;
@@ -38,7 +37,6 @@ public class HistoryFragment extends Fragment {
     CardListView listView;
 
     private LinearLayout rlLayout;
-    private FragmentActivity faActivity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,40 +47,9 @@ public class HistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        faActivity = (FragmentActivity) super.getActivity();
         rlLayout = (LinearLayout) inflater.inflate(R.layout.fragment_history, container, false);
 
-        LineChart lineChart = (LineChart) rlLayout.findViewById(R.id.chart);
-        // creating list of entry
-        ArrayList<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(4f, 0));
-        entries.add(new Entry(8f, 1));
-        entries.add(new Entry(6f, 2));
-        entries.add(new Entry(2f, 3));
-        entries.add(new Entry(18f, 4));
-        entries.add(new Entry(9f, 5));
-
-        LineDataSet dataset = new LineDataSet(entries, "# of MOI's");
-        dataset.setDrawFilled(true);
-
-        // creating labels
-        ArrayList<String> labels = new ArrayList<String>();
-        labels.add("January");
-        labels.add("February");
-        labels.add("March");
-        labels.add("April");
-        labels.add("May");
-        labels.add("June");
-        labels.add("July");
-        labels.add("August");
-        labels.add("September");
-        labels.add("October");
-        labels.add("November");
-        labels.add("December");
-
-        LineData data = new LineData(labels, dataset);
-        lineChart.setData(data); // set the data and list of lables into chart
-
+        personal = ((TabActivity) getActivity()).getPersonal();
 
         cards = new ArrayList<>();
         displayArray = new ArrayList<>();
@@ -101,8 +68,8 @@ public class HistoryFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        if (personalId.length() > 0) {
-            myFirebaseRef = new Firebase("https://boiling-heat-1137.firebaseIO.com/" + personalId);
+        if (personal.getId().length() > 0) {
+            myFirebaseRef = new Firebase("https://boiling-heat-1137.firebaseIO.com/" + personal.getId());
             getPairings();
         }
     }
@@ -128,6 +95,10 @@ public class HistoryFragment extends Fragment {
     }
 
     public void initCards() {
+        // add chart first
+        Card chart = new ChartCard(getActivity());
+        cards.add(chart);
+
         for (MeetUp m : displayArray) {
             //Create a Card
             Card card = new Card(getContext());

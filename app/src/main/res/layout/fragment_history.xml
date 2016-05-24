@@ -5,22 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chart"
+    <it.gmariotti.cardslib.library.view.CardListView
         android:layout_width="match_parent"
-        android:layout_height="300dp" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <it.gmariotti.cardslib.library.view.CardListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/myList"
-            card:list_card_layout_resourceID="@layout/custom_list_thumbnail_layout"/>
-
-    </RelativeLayout>
-
+        android:layout_height="match_parent"
+        android:id="@+id/myList"
+        card:list_card_layout_resourceID="@layout/custom_list_thumbnail_layout"/>
 
 </LinearLayout>

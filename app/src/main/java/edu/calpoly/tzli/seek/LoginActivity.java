@@ -10,9 +10,15 @@ import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.firebase.client.Firebase;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity {
@@ -21,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private LoginButton loginButton;
     private CallbackManager callbackManager;
-    private static String username;
+    private FacebookProfile personal;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken,
                                                        AccessToken currentAccessToken) {
                 if (isResumed) {
-                    launchNext();
+                    getPersonalProfile();
                 }
             }
         };
@@ -68,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (AccessToken.getCurrentAccessToken() != null) {
             // if the user already logged in, try to show the selection fragment
-            launchNext();
+            getPersonalProfile();
         }
     }
 
@@ -97,8 +103,32 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void launchNext() {
-        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+        Intent i = new Intent(LoginActivity.this, TabActivity.class);
+        i.putExtra("personal", personal);
         startActivity(i);
         finish();
+    }
+
+    // get login user's profile
+    public void getPersonalProfile() {
+        GraphRequest.newMeRequest(
+                AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject me, GraphResponse response) {
+                        if (response.getError() != null) {
+                            // handle error
+                        } else {
+                            String name = me.optString("name");
+                            String id = me.optString("id");
+                            try {
+                                personal = new FacebookProfile(name, id);
+
+                                launchNext();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }).executeAsync();
     }
 }

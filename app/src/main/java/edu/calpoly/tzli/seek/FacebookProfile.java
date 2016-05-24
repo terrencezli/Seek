@@ -1,15 +1,16 @@
 package edu.calpoly.tzli.seek;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * Created by terrence on 5/13/16.
  */
-public class FacebookProfile {
-    private String name;
-    private String id;
-    private String picture;
-    private int metUp;
+public class FacebookProfile implements Serializable{
+    public String name;
+    public String id;
+    public String picture;
+    public int metUp;
 
     public FacebookProfile() {
     }

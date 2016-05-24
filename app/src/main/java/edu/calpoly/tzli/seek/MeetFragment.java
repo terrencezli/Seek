@@ -1,9 +1,9 @@
 package edu.calpoly.tzli.seek;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +11,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -37,11 +35,11 @@ public class MeetFragment extends Fragment
 
     private LinearLayout rlLayout;
 
-    protected Firebase myFirebaseRef;
+    protected static Firebase myFirebaseRef;
     protected Button metFriends;
     private Button friendsPicker;
     private Button datePicker;
-    private FacebookProfile personal;
+    protected FacebookProfile personal;
     public static FacebookProfile friend;
     public static ImageView friendImage;
     public static Date chosenDate;
@@ -55,7 +53,8 @@ public class MeetFragment extends Fragment
         super.onCreate(savedInstanceState);
 
         Firebase.setAndroidContext(getContext());
-        getPersonalProfile();
+        personal = ((TabActivity) getActivity()).getPersonal();
+        myFirebaseRef = new Firebase("https://boiling-heat-1137.firebaseIO.com/" + personal.getId());
     }
 
     @Override
@@ -63,6 +62,9 @@ public class MeetFragment extends Fragment
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rlLayout = (LinearLayout) inflater.inflate(R.layout.fragment_meet, container, false);
+
+        initLayout();
+        initAddKeyListeners();
 
         return rlLayout;
     }
@@ -98,6 +100,24 @@ public class MeetFragment extends Fragment
 
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            //Restore the fragment's state here
+            savedInstanceState.putSerializable("personal", personal);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        //Save the fragment's state here
+        outState.putSerializable("personal", personal);
+    }
+
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
@@ -126,9 +146,15 @@ public class MeetFragment extends Fragment
 
                     myFirebaseRef.push().setValue(m);
 
+                    Drawable myDrawable = getResources().getDrawable(R.drawable.profile_picture);
+                    friendImage.setImageDrawable(myDrawable);
+                    friendsPicker.setText("Pick a friend");
+                    datePicker.setText("Pick a date");
+
+
                     Toast.makeText(getContext(), "Sent userId " + friend.getName(), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), "Please find a friend", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please find a friend or enter a date", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.friendsButton:
@@ -136,34 +162,6 @@ public class MeetFragment extends Fragment
                 startActivity(i);
                 break;
         }
-    }
-
-    // get login user's profile
-    public void getPersonalProfile() {
-        GraphRequest.newMeRequest(
-                AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject me, GraphResponse response) {
-                        if (response.getError() != null) {
-                            // handle error
-                        } else {
-                            String name = me.optString("name");
-                            String id = me.optString("id");
-                            try {
-                                personal = new FacebookProfile(name, id);
-                                HistoryFragment.personalName = name;
-                                HistoryFragment.personalId = id;
-
-                                myFirebaseRef = new Firebase("https://boiling-heat-1137.firebaseIO.com/" + personal.getId());
-
-                                initLayout();
-                                initAddKeyListeners();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }).executeAsync();
     }
 
     private void showDatePicker() {

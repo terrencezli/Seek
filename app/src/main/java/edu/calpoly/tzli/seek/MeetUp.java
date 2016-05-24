@@ -2,8 +2,6 @@ package edu.calpoly.tzli.seek;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.util.Date;
-
 /**
  * Created by terrence on 5/16/16.
  */
