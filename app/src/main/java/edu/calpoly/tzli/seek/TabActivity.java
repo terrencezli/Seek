@@ -26,14 +26,14 @@ public class TabActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        if (savedInstanceState != null) {
-//            //Restore the fragment's instance
-//            personal = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
-//        }
-
         setContentView(R.layout.activity_tab);
-        personal = (FacebookProfile) getIntent().getSerializableExtra("personal");
+
+        if (savedInstanceState != null) {
+            personal = (FacebookProfile) getLastCustomNonConfigurationInstance();
+        }
+        else {
+            personal = (FacebookProfile) getIntent().getSerializableExtra("personal");
+        }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -87,10 +87,12 @@ public class TabActivity extends AppCompatActivity
     }
 
     @Override
+    public Object onRetainCustomNonConfigurationInstance() {
+        return personal;
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        //Save the fragment's instance
-        //getSupportFragmentManager().putFragment(outState, "mContent", mContent);
     }
 }

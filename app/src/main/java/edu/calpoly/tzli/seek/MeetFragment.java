@@ -1,6 +1,7 @@
 package edu.calpoly.tzli.seek;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -52,9 +53,6 @@ public class MeetFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Firebase.setAndroidContext(getContext());
-        personal = ((TabActivity) getActivity()).getPersonal();
-        myFirebaseRef = new Firebase("https://boiling-heat-1137.firebaseIO.com/" + personal.getId());
     }
 
     @Override
@@ -65,6 +63,10 @@ public class MeetFragment extends Fragment
 
         initLayout();
         initAddKeyListeners();
+
+        Firebase.setAndroidContext(getContext());
+        personal = ((TabActivity) getActivity()).getPersonal();
+        myFirebaseRef = new Firebase("https://boiling-heat-1137.firebaseIO.com/" + personal.getId());
 
         return rlLayout;
     }
@@ -80,6 +82,13 @@ public class MeetFragment extends Fragment
         metFriends.setOnClickListener(this);
 
         friendImage = (ImageView) rlLayout.findViewById(R.id.profile_picture);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+
     }
 
     @Override
@@ -99,25 +108,6 @@ public class MeetFragment extends Fragment
         }
 
     }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            //Restore the fragment's state here
-            savedInstanceState.putSerializable("personal", personal);
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        //Save the fragment's state here
-        outState.putSerializable("personal", personal);
-    }
-
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
@@ -179,7 +169,7 @@ public class MeetFragment extends Fragment
          * Set Call back to capture selected date
          */
         date.setCallBack(ondate);
-        date.show(getFragmentManager(), "Date Picker");
+        date.show(getFragmentManager(), "Datepickerdialog");
     }
 
     android.app.DatePickerDialog.OnDateSetListener ondate = new android.app.DatePickerDialog.OnDateSetListener() {

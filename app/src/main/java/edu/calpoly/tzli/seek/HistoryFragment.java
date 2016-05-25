@@ -38,6 +38,9 @@ public class HistoryFragment extends Fragment {
 
     private LinearLayout rlLayout;
 
+    public HistoryFragment() {
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
