@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -34,7 +35,7 @@ public class MeetFragment extends Fragment
         implements DatePickerDialog.OnDateSetListener,
         View.OnClickListener {
 
-    private LinearLayout rlLayout;
+    private ScrollView rlLayout;
 
     protected static Firebase myFirebaseRef;
     protected Button metFriends;
@@ -59,7 +60,7 @@ public class MeetFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rlLayout = (LinearLayout) inflater.inflate(R.layout.fragment_meet, container, false);
+        rlLayout = (ScrollView) inflater.inflate(R.layout.fragment_meet, container, false);
 
         initLayout();
         initAddKeyListeners();
