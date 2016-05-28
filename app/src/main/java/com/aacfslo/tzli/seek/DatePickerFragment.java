@@ -1,4 +1,4 @@
-package edu.calpoly.tzli.seek;
+package com.aacfslo.tzli.seek;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;

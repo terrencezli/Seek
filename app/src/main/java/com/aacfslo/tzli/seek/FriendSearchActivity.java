@@ -1,4 +1,4 @@
-package edu.calpoly.tzli.seek;
+package com.aacfslo.tzli.seek;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -31,8 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import edu.calpoly.tzli.seek.helper.DividerItemDecoration;
-import edu.calpoly.tzli.seek.helper.RecyclerItemClickListener;
+import com.aacfslo.tzli.seek.helper.DividerItemDecoration;
+import com.aacfslo.tzli.seek.helper.RecyclerItemClickListener;
 
 public class FriendSearchActivity extends AppCompatActivity
 //        implements

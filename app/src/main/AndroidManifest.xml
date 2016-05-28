@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="edu.calpoly.tzli.seek"
+<manifest package="com.aacfslo.tzli.seek"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
   <uses-permission android:name="android.permission.INTERNET"/>
 
   <application
-      android:name=".SeekApplication"
+      android:name="com.aacfslo.tzli.seek.SeekApplication"
       android:allowBackup="true"
       android:icon="@mipmap/ic_launcher"
       android:label="@string/app_name"
       android:supportsRtl="true"
       android:theme="@style/MyMaterialTheme">
     <activity
-        android:name=".LoginActivity"
+        android:name="com.aacfslo.tzli.seek.LoginActivity"
         android:theme="@style/Theme.AppCompat.NoActionBar">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
@@ -20,8 +20,8 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
-    <activity android:name=".TabActivity"/>
-    <activity android:name=".FriendSearchActivity"/>
+    <activity android:name="com.aacfslo.tzli.seek.TabActivity"/>
+    <activity android:name="com.aacfslo.tzli.seek.FriendSearchActivity"/>
     <activity
         android:name="com.facebook.FacebookActivity"
         android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"

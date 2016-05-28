@@ -5,7 +5,7 @@ android {
     buildToolsVersion "24.0.0 rc2"
 
     defaultConfig {
-        applicationId "edu.calpoly.tzli.seek"
+        applicationId "com.aacf.tzli.seek"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1

@@ -1,4 +1,4 @@
-package edu.calpoly.tzli.seek;
+package com.aacfslo.tzli.seek;
 
 import java.io.IOException;
 import java.io.Serializable;
