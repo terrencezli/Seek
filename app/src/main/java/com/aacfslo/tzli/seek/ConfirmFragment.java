@@ -20,8 +20,10 @@ import it.gmariotti.cardslib.library.internal.CardThumbnail;
 import it.gmariotti.cardslib.library.recyclerview.internal.CardArrayRecyclerViewAdapter;
 import it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView;
 
-
-public class HistoryFragment extends Fragment {
+/**
+ * Created by terrence on 5/30/16.
+ */
+public class ConfirmFragment extends Fragment {
     protected Firebase myFirebaseRef;
     protected FacebookProfile personal;
 
@@ -32,7 +34,7 @@ public class HistoryFragment extends Fragment {
 
     private LinearLayout rlLayout;
 
-    public HistoryFragment() {
+    public ConfirmFragment() {
     }
 
     @Override
@@ -44,7 +46,7 @@ public class HistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rlLayout = (LinearLayout) inflater.inflate(R.layout.fragment_history, container, false);
+        rlLayout = (LinearLayout) inflater.inflate(R.layout.fragment_confirm, container, false);
 
         personal = ((TabActivity) getActivity()).getPersonal();
 
@@ -62,9 +64,6 @@ public class HistoryFragment extends Fragment {
 
         myFirebaseRef = new Firebase("https://boiling-heat-1137.firebaseIO.com/" + personal.getId());
 
-        // add chart first
-        Card chart = new ChartCard(getActivity());
-        cards.add(chart);
         getPairings();
 
         return rlLayout;
@@ -100,7 +99,7 @@ public class HistoryFragment extends Fragment {
         for (MeetUp m : displayArray) {
             //Create a Card
             Card card = new Card(getContext());
-            card.setTitle("     " + m.getName() + "               " + m.getDate());
+            card.setTitle("     " + m.getName());
 
             //Create thumbnail
             CardThumbnail thumb = new CardThumbnail(getContext());

@@ -53,7 +53,7 @@
                 style="@style/card.native.card_thumbnail_outer_layout"
                 android:id="@+id/card_thumbnail_layout"
                 android:layout_width="wrap_content"
-                card:card_thumbnail_layout_resourceID="@layout/custom_base_thumbnail_layout"
+                card:card_thumbnail_layout_resourceID="@layout/history_base_thumbnail_layout"
                 android:layout_height="match_parent"/>
 
             <!-- Main Content View -->
@@ -61,7 +61,7 @@
                 android:id="@+id/card_main_content_layout"
                 style="@style/card.native.content_outer_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 

@@ -9,6 +9,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.firebase.client.Firebase;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,13 +45,15 @@ public class TabActivity extends AppCompatActivity
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        Firebase.setAndroidContext(this);
     }
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new MeetFragment(), "Meet Up");
         adapter.addFragment(new HistoryFragment(), "History");
-//        adapter.addFragment(new ThreeFragment(), "THREE");
+        adapter.addFragment(new ConfirmFragment(), "Confirm");
         viewPager.setAdapter(adapter);
     }
 

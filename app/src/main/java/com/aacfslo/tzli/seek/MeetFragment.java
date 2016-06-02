@@ -37,6 +37,10 @@ public class MeetFragment extends Fragment
     public static FacebookProfile friend;
     public static ImageView friendImage;
     public static Date chosenDate;
+    private static final String _PERSONAL = "PERSONAL_STATE";
+    private static final String _DATE = "DATE_STATE";
+    private static final String _FRAGMENT_STATE = "FRAGMENT_STATE";
+    private Bundle savedState = null;
 
     public MeetFragment() {
         // Required empty public constructor
@@ -57,9 +61,18 @@ public class MeetFragment extends Fragment
         initLayout();
         initAddKeyListeners();
 
-        Firebase.setAndroidContext(getContext());
         personal = ((TabActivity) getActivity()).getPersonal();
         myFirebaseRef = new Firebase("https://boiling-heat-1137.firebaseIO.com/" + personal.getId());
+
+        if(savedInstanceState != null && savedState == null) {
+            savedState = savedInstanceState.getBundle(_FRAGMENT_STATE);
+        }
+        if(savedState != null) {
+            if (saveState().getString(_DATE) != null) {
+                datePicker.setText(savedState.getString(_DATE));
+            }
+        }
+        savedState = null;
 
         return rlLayout;
     }
@@ -75,13 +88,6 @@ public class MeetFragment extends Fragment
         metFriends.setOnClickListener(this);
 
         friendImage = (ImageView) rlLayout.findViewById(R.id.profile_picture);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-
     }
 
     @Override
@@ -174,5 +180,38 @@ public class MeetFragment extends Fragment
             datePicker.setText(chosenDate.toString().substring(0, 10));
         }
     };
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            //Restore the fragment's state here
+        }
+    }
+
+    private Bundle saveState() { /* called either from onDestroyView() or onSaveInstanceState() */
+        Bundle state = new Bundle();
+        state.putSerializable(_PERSONAL, personal);
+
+        if (chosenDate != null) {
+            state.putString(_DATE, chosenDate.toString().substring(0, 10));
+        }
+        return state;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        //Save the fragment's state here
+        outState.putBundle(_FRAGMENT_STATE, (savedState != null) ? savedState : saveState());
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        savedState = saveState();
+    }
 }
 
