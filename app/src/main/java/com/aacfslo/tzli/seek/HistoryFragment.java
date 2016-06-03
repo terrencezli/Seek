@@ -51,16 +51,16 @@ public class HistoryFragment extends Fragment {
         cards = new ArrayList<>();
         displayArray = new ArrayList<>();
 
-        mCardArrayAdapter = new CardArrayRecyclerViewAdapter(getContext(),cards);
+        mCardArrayAdapter = new CardArrayRecyclerViewAdapter(getContext(), cards);
 
         cardRecyclerView = (CardRecyclerView) rlLayout.findViewById(R.id.myList);
         cardRecyclerView.setHasFixedSize(false);
         cardRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        if (cardRecyclerView !=null){
+        if (cardRecyclerView != null) {
             cardRecyclerView.setAdapter(mCardArrayAdapter);
         }
 
-        myFirebaseRef = new Firebase("https://boiling-heat-1137.firebaseIO.com/" + personal.getId());
+        myFirebaseRef = new Firebase(TabActivity.FIREBASE_URL + personal.getId());
 
         // add chart first
         Card chart = new ChartCard(getActivity());
@@ -79,14 +79,19 @@ public class HistoryFragment extends Fragment {
         myFirebaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                displayArray.clear();
 
+                int arraySize = displayArray.size();
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     MeetUp m = postSnapshot.getValue(MeetUp.class);
-                    displayArray.add(m);
+
+                    if (m.getMet() && !displayArray.contains(m)) {
+                        displayArray.add(m);
+                    }
                 }
 
-                initCards();
+                if (arraySize != displayArray.size()) {
+                    initCards();
+                }
             }
 
             @Override
@@ -112,7 +117,6 @@ public class HistoryFragment extends Fragment {
             card.addCardThumbnail(thumb);
 
             cards.add(card);
-
         }
         mCardArrayAdapter.notifyDataSetChanged();
 

@@ -9,7 +9,8 @@ public class MeetUp {
     private String name;
     private String id;
     private String date;
-    private String location;
+    private Boolean met;
+    private String uniqueId;
 
     public MeetUp() {
     }
@@ -17,13 +18,14 @@ public class MeetUp {
     public MeetUp(String name, String id) {
         this.name = name;
         this.id = id;
+        this.met = false;
     }
 
-    public MeetUp(String name, String id, String date, String location) {
+    public MeetUp(String name, String id, String date) {
         this.name = name;
         this.id = id;
         this.date = date;
-        this.location = location;
+        this.met = false;
     }
 
     public String getName() {
@@ -38,8 +40,12 @@ public class MeetUp {
         return date;
     }
 
-    public String getLocation() {
-        return location;
+    public Boolean getMet() {
+        return met;
+    }
+
+    public String getUniqueId() {
+        return uniqueId;
     }
 
     public void setName(String name) {
@@ -54,8 +60,12 @@ public class MeetUp {
         this.date = date.substring(0,10);
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setMet(Boolean met) {
+        this.met = met;
+    }
+
+    public void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
     }
 
     @JsonIgnoreProperties({
@@ -71,7 +81,22 @@ public class MeetUp {
                 "name:'" + name + '\'' +
                 ", id:'" + id + '\'' +
                 ", date:'" + date + '\'' +
-                ", location:'" + location + '\'' +
+                ", met:'" + met + '\'' +
+                ", uniqueId:'" + uniqueId + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MeetUp meetUp = (MeetUp) o;
+
+        if (name != null ? !name.equals(meetUp.name) : meetUp.name != null) return false;
+        if (id != null ? !id.equals(meetUp.id) : meetUp.id != null) return false;
+        if (date != null ? !date.equals(meetUp.date) : meetUp.date != null) return false;
+        return met != null ? met.equals(meetUp.met) : meetUp.met == null;
+
     }
 }

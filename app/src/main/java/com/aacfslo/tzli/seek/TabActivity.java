@@ -24,6 +24,7 @@ public class TabActivity extends AppCompatActivity
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private FacebookProfile personal;
+    public static String FIREBASE_URL = "https://boiling-heat-1137.firebaseIO.com/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -17,6 +17,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.aacfslo.tzli.seek.helper.DividerItemDecoration;
+import com.aacfslo.tzli.seek.helper.RecyclerItemClickListener;
 import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -30,9 +32,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-
-import com.aacfslo.tzli.seek.helper.DividerItemDecoration;
-import com.aacfslo.tzli.seek.helper.RecyclerItemClickListener;
 
 public class FriendSearchActivity extends AppCompatActivity
 //        implements

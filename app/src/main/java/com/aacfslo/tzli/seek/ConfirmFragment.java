@@ -7,13 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardThumbnail;
@@ -28,6 +32,7 @@ public class ConfirmFragment extends Fragment {
     protected FacebookProfile personal;
 
     protected ArrayList<MeetUp> displayArray;
+    protected ArrayList<String> keys;
     protected ArrayList<Card> cards;
     CardArrayRecyclerViewAdapter mCardArrayAdapter;
     CardRecyclerView cardRecyclerView;
@@ -52,6 +57,7 @@ public class ConfirmFragment extends Fragment {
 
         cards = new ArrayList<>();
         displayArray = new ArrayList<>();
+        keys = new ArrayList<>();
 
         mCardArrayAdapter = new CardArrayRecyclerViewAdapter(getContext(),cards);
 
@@ -62,7 +68,7 @@ public class ConfirmFragment extends Fragment {
             cardRecyclerView.setAdapter(mCardArrayAdapter);
         }
 
-        myFirebaseRef = new Firebase("https://boiling-heat-1137.firebaseIO.com/" + personal.getId());
+        myFirebaseRef = new Firebase(TabActivity.FIREBASE_URL + personal.getId());
 
         getPairings();
 
@@ -78,14 +84,21 @@ public class ConfirmFragment extends Fragment {
         myFirebaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                displayArray.clear();
+                int arraySize = keys.size();
 
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     MeetUp m = postSnapshot.getValue(MeetUp.class);
-                    displayArray.add(m);
+                    displayArray.clear();
+
+                    if (!m.getMet() && !keys.contains(postSnapshot.getKey())) {
+                        keys.add(postSnapshot.getKey());
+                        displayArray.add(m);
+                    }
                 }
 
-                initCards();
+                if (arraySize != keys.size()) {
+                    initCards();
+                }
             }
 
             @Override
@@ -96,10 +109,60 @@ public class ConfirmFragment extends Fragment {
     }
 
     public void initCards() {
-        for (MeetUp m : displayArray) {
+        for (int i = 0; i < displayArray.size(); i++) {
+            MeetUp m = displayArray.get(i);
             //Create a Card
-            Card card = new Card(getContext());
-            card.setTitle("     " + m.getName());
+            ConfirmCard card = new ConfirmCard(getContext(), new ConfirmCard.ConfirmCardOnClickListener() {
+                @Override
+                public void onClicked(ConfirmCard card, boolean deny) {
+                    if (deny) {
+                        Toast.makeText(getContext(), "No meet up :(", Toast.LENGTH_SHORT).show();
+
+                        Firebase friendBase = new Firebase(TabActivity.FIREBASE_URL + card.getUserId());
+                        friendBase.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot snapshot) {
+
+                                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                    MeetUp m = postSnapshot.getValue(MeetUp.class);
+                                    displayArray.clear();
+
+                                    if (!m.getMet() && !keys.contains(postSnapshot.getKey())) {
+                                        keys.add(postSnapshot.getKey());
+                                        displayArray.add(m);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError error) {
+                                System.out.println("The read failed: " + error.getMessage());
+                            }
+                        });
+
+                        keys.remove(card.getUniqueId());
+                        cards.remove(card);
+
+                        myFirebaseRef.child(card.getUniqueId()).setValue(null);
+                    }
+                    else {
+                        Toast.makeText(getContext(), ":)", Toast.LENGTH_SHORT).show();
+
+                        keys.remove(card.getUniqueId());
+                        cards.remove(card);
+
+                        Map<String, Object> met = new HashMap<String, Object>();
+                        met.put("met", true);
+                        myFirebaseRef.child(card.getUniqueId()).updateChildren(met);
+                    }
+
+                    mCardArrayAdapter.notifyDataSetChanged();
+                }
+            });
+
+            card.setUser(m.getName());
+            card.setUserId(m.getId());
+            card.setUniqueId(keys.get(i));
 
             //Create thumbnail
             CardThumbnail thumb = new CardThumbnail(getContext());
@@ -116,4 +179,5 @@ public class ConfirmFragment extends Fragment {
         mCardArrayAdapter.notifyDataSetChanged();
 
     }
+
 }

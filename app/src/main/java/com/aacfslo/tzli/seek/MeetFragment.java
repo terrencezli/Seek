@@ -30,7 +30,7 @@ public class MeetFragment extends Fragment
     private ScrollView rlLayout;
 
     protected static Firebase myFirebaseRef;
-    protected Button metFriends;
+    protected Button meetFriends;
     private Button friendsPicker;
     private Button datePicker;
     protected FacebookProfile personal;
@@ -62,7 +62,7 @@ public class MeetFragment extends Fragment
         initAddKeyListeners();
 
         personal = ((TabActivity) getActivity()).getPersonal();
-        myFirebaseRef = new Firebase("https://boiling-heat-1137.firebaseIO.com/" + personal.getId());
+        myFirebaseRef = new Firebase(TabActivity.FIREBASE_URL + personal.getId());
 
         if(savedInstanceState != null && savedState == null) {
             savedState = savedInstanceState.getBundle(_FRAGMENT_STATE);
@@ -84,8 +84,8 @@ public class MeetFragment extends Fragment
         datePicker = (Button) rlLayout.findViewById(R.id.date_button);
         datePicker.setOnClickListener(this);
 
-        metFriends = (Button) rlLayout.findViewById(R.id.met_button);
-        metFriends.setOnClickListener(this);
+        meetFriends = (Button) rlLayout.findViewById(R.id.meet_button);
+        meetFriends.setOnClickListener(this);
 
         friendImage = (ImageView) rlLayout.findViewById(R.id.profile_picture);
     }
@@ -128,20 +128,28 @@ public class MeetFragment extends Fragment
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.met_button:
+            case R.id.meet_button:
                 if (!friendsPicker.getText().toString().equals("Pick a friend") && chosenDate != null) {
                     MeetUp m = new MeetUp(friend.getName(), friend.getId());
+                    MeetUp fm = new MeetUp(personal.getName(), personal.getId());
                     m.setDate(chosenDate.toString());
+                    fm.setDate(chosenDate.toString());
+
+                    Firebase friendBase = new Firebase(TabActivity.FIREBASE_URL + friend.getId());
 
                     myFirebaseRef.push().setValue(m);
+                    friendBase.push().setValue(fm);
 
+                    Toast.makeText(getContext(), "Sent request to " + friend.getName(), Toast.LENGTH_SHORT).show();
+
+                    // reset image
                     Drawable myDrawable = getResources().getDrawable(R.drawable.profile_picture);
                     friendImage.setImageDrawable(myDrawable);
+
                     friendsPicker.setText("Pick a friend");
                     datePicker.setText("Pick a date");
-
-
-                    Toast.makeText(getContext(), "Sent userId " + friend.getName(), Toast.LENGTH_SHORT).show();
+                    friend = null;
+                    chosenDate = null;
                 } else {
                     Toast.makeText(getContext(), "Please find a friend or enter a date", Toast.LENGTH_SHORT).show();
                 }

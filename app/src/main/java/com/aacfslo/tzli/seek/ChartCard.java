@@ -3,7 +3,6 @@ package com.aacfslo.tzli.seek;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -20,6 +19,7 @@ import it.gmariotti.cardslib.library.internal.Card;
 public class ChartCard extends Card {
 
     protected LineChart lineChart;
+    protected ArrayList<Entry> data;
 
     /**
      * Constructor with a custom inner layout
@@ -36,21 +36,7 @@ public class ChartCard extends Card {
      */
     public ChartCard(Context context, int innerLayout) {
         super(context, innerLayout);
-        init();
-    }
-
-    /**
-     * Init
-     */
-    private void init(){
-
-        //Set a OnClickListener listener
-        setOnClickListener(new OnCardClickListener() {
-            @Override
-            public void onClick(Card card, View view) {
-                Toast.makeText(getContext(), "Click Listener card=", Toast.LENGTH_LONG).show();
-            }
-        });
+        data = new ArrayList<>();
     }
 
     @Override
