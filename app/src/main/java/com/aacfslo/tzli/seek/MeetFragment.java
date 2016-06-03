@@ -135,10 +135,13 @@ public class MeetFragment extends Fragment
                     m.setDate(chosenDate.toString());
                     fm.setDate(chosenDate.toString());
 
+                    Firebase getKeyBase = myFirebaseRef.push();
+                    getKeyBase.setValue(m);
+                    String postId = getKeyBase.getKey();
+
                     Firebase friendBase = new Firebase(TabActivity.FIREBASE_URL + friend.getId());
 
-                    myFirebaseRef.push().setValue(m);
-                    friendBase.push().setValue(fm);
+                    friendBase.child(postId).setValue(fm);
 
                     Toast.makeText(getContext(), "Sent request to " + friend.getName(), Toast.LENGTH_SHORT).show();
 

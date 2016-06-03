@@ -13,6 +13,7 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
@@ -89,6 +90,7 @@ public class ConfirmFragment extends Fragment {
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     MeetUp m = postSnapshot.getValue(MeetUp.class);
                     displayArray.clear();
+                    keys.clear();
 
                     if (!m.getMet() && !keys.contains(postSnapshot.getKey())) {
                         keys.add(postSnapshot.getKey());
@@ -119,26 +121,8 @@ public class ConfirmFragment extends Fragment {
                         Toast.makeText(getContext(), "No meet up :(", Toast.LENGTH_SHORT).show();
 
                         Firebase friendBase = new Firebase(TabActivity.FIREBASE_URL + card.getUserId());
-                        friendBase.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot snapshot) {
+                        friendBase.child(card.getUniqueId()).setValue(null);
 
-                                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                                    MeetUp m = postSnapshot.getValue(MeetUp.class);
-                                    displayArray.clear();
-
-                                    if (!m.getMet() && !keys.contains(postSnapshot.getKey())) {
-                                        keys.add(postSnapshot.getKey());
-                                        displayArray.add(m);
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(FirebaseError error) {
-                                System.out.println("The read failed: " + error.getMessage());
-                            }
-                        });
 
                         keys.remove(card.getUniqueId());
                         cards.remove(card);
