@@ -1,18 +1,12 @@
 <resources>
-    <string name="app_name">Seek</string>
+    <string name="app_name">SeekFirst</string>
     <string name="app_id">1597566493892282</string>
 
     <string name="auto_complete_friends">Find your Friends!</string>
 
-    <string name="selected_time">The time you picked will be shown here.</string>
-    <string name="selected_date">The date you picked will be shown here.</string>
-
-    <string name="pick_time">Pick Time</string>
     <string name="pick_date">Pick Date</string>
 
-    <string name="invite_friends">Met Up!</string>
+    <string name="invite_friends">Meet Up!</string>
     <string name="pick_friend">Pick a friend</string>
-
-    <string name="view_history">History</string>
 
 </resources>
